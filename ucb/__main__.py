@@ -155,11 +155,22 @@ def write_json_to_file(data, filename=COURSE_LIST_FILE):
     logger.info(f'Saved data to the file: [{filename}]')
 
 
+def get_options():
+    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:75.0) Gecko/20100101 Firefox/75.0'
+
+    options = webdriver.FirefoxOptions()
+    # options.add_argument('headless')
+    # specify the desired user agent
+    options.add_argument(f'user-agent={user_agent}')
+
+    return options
+
+
 def main():
     email, password = get_credentials_from_env()
     courses = _get_course_list()
 
-    driver = webdriver.Firefox()
+    driver = webdriver.Firefox(options=get_options())
     driver.implicitly_wait(IMPLICIT_WAIT)
     try:
         _login(driver, user_email=email, user_password=password)
